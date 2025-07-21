@@ -38,6 +38,3 @@ python manage.py runserver
 <http://127.0.0.1:8000/newsletter/delete/<ID>/> - удаление рассылки\
 <http://127.0.0.1:8000/group/> - список чатов\
 <http://127.0.0.1:8000/reset_password/> - сброс пароля\
-<http://127.0.0.1:8000/reset_password_sent/> - следующий этап сброса\
-<http://127.0.0.1:8000/reset_password/> - сброс пароля\
-<http://127.0.0.1:8000/reset_password/> - сброс пароля\
