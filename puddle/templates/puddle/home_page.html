@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if user.is_authenticated %}Профиль менеджера{% else %}Авторизация{% endif %}</title>
+    <style>
+        :root {
+            --primary: #FFD900;
+            --dark: #121212;
+            --darker: #0A0A0A;
+            --light: #FFFFFF;
+            --gray: #2E2E2E;
+            --red: #FF4D4D;
+            --green: #4DFF4D;
+            --blue: #4D4DFF;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #000000, #1A1A1A);
+            margin: 0;
+            min-height: 100vh;
+            color: var(--light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            padding: 40px;
+        }
+
+        .auth-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .auth-message {
+            margin-bottom: 30px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .auth-btn {
+            display: inline-block;
+            padding: 14px 28px;
+            background: var(--primary);
+            color: #000;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .auth-btn:hover {
+            background: #FFE74C;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 217, 0, 0.3);
+        }
+
+        .profile-card {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .profile-header {
+            padding: 30px;
+            text-align: center;
+            background: rgba(255, 217, 0, 0.1);
+            border-bottom: 1px solid rgba(255, 217, 0, 0.2);
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--gray);
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: var(--primary);
+            border: 3px solid var(--primary);
+        }
+
+        .profile-name {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 10px 0 5px;
+        }
+
+        .profile-role {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--primary);
+            color: #000;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .profile-info {
+            padding: 25px;
+        }
+
+        .info-item {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 217, 0, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: var(--primary);
+        }
+
+        .info-content h3 {
+            margin: 0;
+            font-size: 16px;
+            color: var(--primary);
+        }
+
+        .info-content p {
+            margin: 5px 0 0;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 0 25px 25px;
+        }
+
+        .action-btn {
+            padding: 14px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #000;
+        }
+
+        .btn-secondary {
+            background: var(--gray);
+            color: var(--light);
+        }
+
+        .btn-danger {
+            background: var(--red);
+            color: var(--light);
+        }
+
+        .btn-success {
+            background: var(--gray);
+            color: var(--light);
+        }
+
+        .btn-info {
+            background: var(--gray);
+            color: var(--light);
+        }
+
+        .support-footer {
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .support-footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+            .action-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-header {
+                padding: 20px;
+            }
+
+            .profile-info {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% if user.is_authenticated %}
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-avatar">{{ user.username|first|upper }}</div>
+                <h2 class="profile-name">{{ user.username }}</h2>
+                <span class="profile-role">Менеджер</span>
+            </div>
+
+            <div class="profile-info">
+                <div class="info-item">
+                    <div class="info-icon">📧</div>
+                    <div class="info-content">
+                        <h3>Почта</h3>
+                        <p>{{ user.email }}</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">📱</div>
+                    <div class="info-content">
+                        <h3>Телефон Telegram</h3>
+                        <p>{{ user.phone_number }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-grid">
+                <a href="{% url 'puddle:newsletter_create' %}" class="action-btn btn-primary">Добавить рассылку</a>
+                <a href="{% url 'puddle:newsletter_list' %}" class="action-btn btn-secondary">Мои рассылки</a>
+                <a href="{% url 'puddle:send_telegram_code' %}" class="action-btn btn-success">Сессия</a>
+                <a href="{% url 'puddle:add_group' %}" class="action-btn btn-info">Добавить группы</a>
+                <a href="{% url 'puddle:list_chats' %}" class="action-btn btn-secondary">Мои группы</a>
+                <a href="{% url 'puddle:logout' %}" class="action-btn btn-danger">Выйти</a>
+            </div>
+
+            <div class="support-footer">
+                Поддержка: <a href="tel:+79510397291">+7 (951) 039-72-91</a> |
+                <a href="https://t.me/xparispom" target="_blank">@xparispom</a>
+            </div>
+        </div>
+    {% else %}
+        <div class="auth-card">
+            <h1 class="auth-title">Авторизация</h1>
+            <p class="auth-message">Для доступа к профилю необходимо войти в систему</p>
+            <a href="{% url 'puddle:login' %}" class="auth-btn">Войти</a>
+        </div>
+    {% endif %}
+</body>
+</html>
